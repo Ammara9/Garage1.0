@@ -7,33 +7,45 @@ using System.Text;
 using System.Threading.Tasks;
 using Garage1._0.Interface;
 
+// Garage class implementation
+// This class represents a garage that can hold a certain number of vehicles
+// It provides methods to add, remove, display, and search vehicles
 namespace Garage1._0
 {
+    // Garage class that implements IEnumerable<T> interface
     public class Garage<T> : IEnumerable<T>
         where T : IVehicle
     {
+        // Array to store vehicles
         public T[] vehicles;
+
+        // Capacity of the garage
         public int capacity;
+
+        // Count of vehicles currently in the garage
         public int count;
 
-        //constructor capacity of garage
+        // Constructor to initialize the garage with a given capacity
         public Garage(int capacity)
         {
+            // Initialize capacity and count
             this.capacity = capacity;
-            //this.vehicles = new T[capacity];
             vehicles = new T[capacity];
             count = 3;
 
-            vehicles[0] = (T)(object)new Car("Car123", "Red", 4, "Diesesl");
+            // Initialize some sample vehicles
+            vehicles[0] = (T)(object)new Car("Car123", "Red", 4, "Diesel");
             vehicles[1] = (T)(object)new Motorcycle("Motorcycle456", "Blue", 2, 500);
             vehicles[2] = (T)(object)new Bus("Bus789", "Red", 4, 2000);
         }
 
-        // Method to add vehicle in the garage
+        // Method to add a vehicle to the garage
         public void AddVehicle(T vehicle)
         {
+            // Check if the garage is not full
             if (count < capacity)
             {
+                // Add the vehicle to the array
                 vehicles[count] = vehicle;
                 count++;
                 Console.WriteLine(
@@ -46,6 +58,7 @@ namespace Garage1._0
             }
         }
 
+        // Method to display all vehicles in the garage
         public void DisplayVehicles()
         {
             Console.WriteLine($"Garage has {count} vehicles:");
@@ -57,6 +70,7 @@ namespace Garage1._0
             }
         }
 
+        // Method to remove a vehicle from the garage
         public void RemoveVehicle(string registrationNumber)
         {
             for (int i = 0; i < count; i++)
@@ -83,6 +97,7 @@ namespace Garage1._0
             Console.WriteLine($"Vehicle with registration number {registrationNumber} not found.");
         }
 
+        // Method to display the count of each vehicle type
         public void DisplayVehicleType()
         {
             int motorcycleCount = 0;
@@ -134,6 +149,7 @@ namespace Garage1._0
             }
         }
 
+        // Method to search for vehicles based on a search term
         public void SearchVehicle()
         {
             Console.Write("Enter search term: ");
@@ -181,13 +197,16 @@ namespace Garage1._0
             }
         }
 
+        // Method to create a garage
         public void CreateGarage() { }
 
+        // GetEnumerator method implementation for IEnumerable<T> interface
         public IEnumerator<T> GetEnumerator()
         {
             return ((IEnumerable<T>)vehicles).GetEnumerator();
         }
 
+        // GetEnumerator method implementation for IEnumerable interface
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

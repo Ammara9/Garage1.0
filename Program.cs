@@ -10,7 +10,7 @@ namespace Garage1._0
             Garage<IVehicle> garage = new Garage<IVehicle>(10);
 
             // Create a new GarageHandler instance and pass the garage to it
-            GarageHandler handler = new GarageHandler(null, garage);
+            GarageHandler handler = new GarageHandler(null!, garage);
 
             // Create a new UI instance and pass the handler and garage to it
             UI ui = new UI(handler, garage);
