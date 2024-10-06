@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Garage1._0.Interface;
+﻿using System; // Importing necessary system namespaces
+using System.Collections; // Provides non-generic collections
+using System.Collections.Generic; // Provides generic collections such as List, Dictionary, etc.
+using System.Diagnostics; // For interacting with processes, event logs, and more (potential debugging)
+using System.Linq; // Provides LINQ functionalities
+using System.Text; // Provides string manipulation functions
+using System.Threading.Tasks; // Enables multi-threading and asynchronous programming
+using Garage1._0.Interface; // Imports interfaces defined in the project
 
 // Garage class implementation
 // This class represents a garage that can hold a certain number of vehicles
@@ -14,7 +14,7 @@ namespace Garage1._0
 {
     // Garage class that implements IEnumerable<T> interface
     public class Garage<T> : IEnumerable<T>
-        where T : IVehicle
+        where T : IVehicle // Constraint ensures T is an IVehicle or its subtype
     {
         // Array to store vehicles
         public T[] vehicles;
@@ -30,8 +30,8 @@ namespace Garage1._0
         {
             // Initialize capacity and count
             this.capacity = capacity;
-            vehicles = new T[capacity];
-            count = 3;
+            vehicles = new T[capacity]; // Create an array with the specified capacity
+            count = 3; // Default initial count of vehicles
 
             // Initialize some sample vehicles
             vehicles[0] = (T)(object)new Car("Car123", "Red", 4, "Diesel");
@@ -45,7 +45,7 @@ namespace Garage1._0
             // Check if the garage is not full
             if (count < capacity)
             {
-                // Add the vehicle to the array
+                // Add the vehicle to the array and increment count
                 vehicles[count] = vehicle;
                 count++;
                 Console.WriteLine(
@@ -54,16 +54,17 @@ namespace Garage1._0
             }
             else
             {
-                Console.WriteLine("Garage is full. Cannot Park more vehicles.");
+                Console.WriteLine("Garage is full. Cannot Park more vehicles."); // Error message if garage is full
             }
         }
 
         // Method to display all vehicles in the garage
         public void DisplayVehicles()
         {
-            Console.WriteLine($"Garage has {count} vehicles:");
+            Console.WriteLine($"Garage has {count} vehicles:"); // Display vehicle count
             for (int i = 0; i < count; i++)
             {
+                // Display details of each vehicle
                 Console.WriteLine(
                     $"  {i + 1} - {vehicles[i].RegistrationNumber} {vehicles[i].Color} colour {vehicles[i].NumberOfWheels} wheels"
                 );
@@ -77,7 +78,7 @@ namespace Garage1._0
             {
                 if (vehicles[i].RegistrationNumber == registrationNumber)
                 {
-                    // Store the removed vehicle's details
+                    // Store the removed vehicle's details for display
                     string removedRegistrationNumber = vehicles[i].RegistrationNumber;
                     string removedColor = vehicles[i].Color;
                     int removedNumberOfWheels = vehicles[i].NumberOfWheels;
@@ -87,14 +88,14 @@ namespace Garage1._0
                     {
                         vehicles[j] = vehicles[j + 1];
                     }
-                    count--;
+                    count--; // Decrease the count after removal
                     Console.WriteLine(
                         $"Vehicle {removedRegistrationNumber} {removedColor} colour {removedNumberOfWheels} wheels removed successfully."
                     );
                     return;
                 }
             }
-            Console.WriteLine($"Vehicle with registration number {registrationNumber} not found.");
+            Console.WriteLine($"Vehicle with registration number {registrationNumber} not found."); // Vehicle not found message
         }
 
         // Method to display the count of each vehicle type
@@ -104,6 +105,7 @@ namespace Garage1._0
             int carCount = 0;
             int busCount = 0;
 
+            // Iterate through vehicles and count by type
             for (int i = 0; i < count; i++)
             {
                 if (vehicles[i] is Motorcycle)
@@ -120,11 +122,13 @@ namespace Garage1._0
                 }
             }
 
+            // Display the type count
             Console.WriteLine("Vehicle Types:");
             Console.WriteLine($"  Motorcycles: {motorcycleCount}");
             Console.WriteLine($"  Cars: {carCount}");
             Console.WriteLine($"  Buses: {busCount}");
 
+            // Display detailed information for each vehicle
             Console.WriteLine("Vehicle Details:");
             for (int i = 0; i < count; i++)
             {
@@ -155,16 +159,18 @@ namespace Garage1._0
             Console.Write("Enter search term (e.g., black 4 , pink 3, truck): ");
             string? searchTerm = Console.ReadLine();
 
-            string[] searchTerms = searchTerm!.Split(' ');
+            string[] searchTerms = searchTerm!.Split(' '); // Split the input into individual search terms
 
-            bool found = false;
+            bool found = false; // Flag to track if any matches are found
 
+            // Search each vehicle for matching terms
             for (int i = 0; i < count; i++)
             {
                 bool match = true;
 
                 foreach (string term in searchTerms)
                 {
+                    // Check if the term matches the vehicle type or properties
                     if (term.ToLower() == "motorcycle" && !(vehicles[i] is Motorcycle))
                     {
                         match = false;
@@ -196,11 +202,13 @@ namespace Garage1._0
 
                 if (match)
                 {
+                    // Display matched vehicle
                     Console.WriteLine(
                         $"  {i + 1} - {vehicles[i].RegistrationNumber} {vehicles[i].Color} colour {vehicles[i].NumberOfWheels} wheels"
                     );
                     found = true;
 
+                    // Display additional details based on vehicle type
                     if (vehicles[i] is Motorcycle motorcycle)
                     {
                         Console.WriteLine($"    Cylinder Volume: {motorcycle.CylinderVolume}");
@@ -216,7 +224,7 @@ namespace Garage1._0
                 }
             }
 
-            if (!found)
+            if (!found) // If no vehicles match the search term
             {
                 Console.WriteLine("No vehicles found matching the search term.");
             }
@@ -226,19 +234,19 @@ namespace Garage1._0
         // Static method to create a garage
         public static Garage<IVehicle> CreateGarage(int capacity)
         {
-            return new Garage<IVehicle>(capacity);
+            return new Garage<IVehicle>(capacity); // Returns a new garage with the given capacity
         }
 
         // GetEnumerator method implementation for IEnumerable<T> interface
         public IEnumerator<T> GetEnumerator()
         {
-            return ((IEnumerable<T>)vehicles).GetEnumerator();
+            return ((IEnumerable<T>)vehicles).GetEnumerator(); // Returns the enumerator for the vehicle array
         }
 
         // GetEnumerator method implementation for IEnumerable interface
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return GetEnumerator(); // Calls the generic enumerator
         }
     }
 }
