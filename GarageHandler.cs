@@ -56,6 +56,11 @@ namespace Garage1._0
                         Console.WriteLine("Press any key to continue");
                         Console.ReadKey();
                         break;
+                    case "6":
+                        HandleCreateGarage();
+                        Console.WriteLine("Press any key to continue");
+                        Console.ReadKey();
+                        break;
                     case "7":
                         ui.ExitApplication();
                         break;
@@ -222,6 +227,16 @@ namespace Garage1._0
             string? registrationNumber = Console.ReadLine();
 
             garage.RemoveVehicle(registrationNumber!);
+        }
+
+        public void HandleCreateGarage()
+        {
+            Console.Write("Enter garage capacity: ");
+            int capacity = Convert.ToInt32(Console.ReadLine());
+
+            Garage<IVehicle> garage = Garage<IVehicle>.CreateGarage(capacity);
+
+            Console.WriteLine($"Garage created with capacity {capacity}.");
         }
     }
 }

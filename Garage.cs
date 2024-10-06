@@ -152,24 +152,49 @@ namespace Garage1._0
         // Method to search for vehicles based on a search term
         public void SearchVehicle()
         {
-            Console.Write("Enter search term: ");
+            Console.Write("Enter search term (e.g., black 4 , pink 3, truck): ");
             string? searchTerm = Console.ReadLine();
+
+            string[] searchTerms = searchTerm!.Split(' ');
 
             bool found = false;
 
             for (int i = 0; i < count; i++)
             {
-                if (
-                    vehicles[i]
-                        .RegistrationNumber.Contains(
-                            searchTerm!,
-                            StringComparison.OrdinalIgnoreCase
-                        )
-                    || vehicles[i].Color.Contains(searchTerm!, StringComparison.OrdinalIgnoreCase)
-                    || vehicles[i]
-                        .NumberOfWheels.ToString()
-                        .Contains(searchTerm!, StringComparison.OrdinalIgnoreCase)
-                )
+                bool match = true;
+
+                foreach (string term in searchTerms)
+                {
+                    if (term.ToLower() == "motorcycle" && !(vehicles[i] is Motorcycle))
+                    {
+                        match = false;
+                        break;
+                    }
+                    else if (term.ToLower() == "car" && !(vehicles[i] is Car))
+                    {
+                        match = false;
+                        break;
+                    }
+                    else if (term.ToLower() == "bus" && !(vehicles[i] is Bus))
+                    {
+                        match = false;
+                        break;
+                    }
+                    else if (
+                        !vehicles[i]
+                            .RegistrationNumber.Contains(term, StringComparison.OrdinalIgnoreCase)
+                        && !vehicles[i].Color.Contains(term, StringComparison.OrdinalIgnoreCase)
+                        && !vehicles[i]
+                            .NumberOfWheels.ToString()
+                            .Contains(term, StringComparison.OrdinalIgnoreCase)
+                    )
+                    {
+                        match = false;
+                        break;
+                    }
+                }
+
+                if (match)
                 {
                     Console.WriteLine(
                         $"  {i + 1} - {vehicles[i].RegistrationNumber} {vehicles[i].Color} colour {vehicles[i].NumberOfWheels} wheels"
@@ -198,7 +223,11 @@ namespace Garage1._0
         }
 
         // Method to create a garage
-        public void CreateGarage() { }
+        // Static method to create a garage
+        public static Garage<IVehicle> CreateGarage(int capacity)
+        {
+            return new Garage<IVehicle>(capacity);
+        }
 
         // GetEnumerator method implementation for IEnumerable<T> interface
         public IEnumerator<T> GetEnumerator()
